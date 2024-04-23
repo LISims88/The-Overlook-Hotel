@@ -4,10 +4,51 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Overlook Hotelgit</title>
+  <title>The Overlook Hotel</title>
 </head>
 <body>
-  <img src="./images/turing-logo.png" alt="turing logo">
+  <nav>
+    <h1>The Overlook Hotel</h1>
+  </nav>
+  <main>
+    <div class="login-container ">
+      <h2>Login to The Overlook Hotel</h2>
+      <div class="login-input">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" />
+      </div>
+      <div>
+        <label for="password">Password:</label>
+        <input type="password" id="pass" name="password" minlength="12" required />
+      </div>
+      <input class="submit" type="submit" value="Sign in" />
+    </div>
+    <div class="dashboard hidden">
+      <h class="welcome">Welcome Back!</h2>
+        <h2 class="name">Name</h2>
+      <div>
+        <label for="search-select">Search by:</label>
+        <select name="search-options" id="search-select">
+          <option value="">--Please choose an option--</option>
+          <option value="future">Future Bookings</option>
+          <option value="past">Past Bookings</option>
+        </select>
+      </div>
+    </div>
+    <div class="booking hidden"> 
+      <div>
+        <label for="search-select">What would you like to Do?:</label>
+        <select name="search-options" id="search-select">
+          <option value="">--Please choose an option--</option>
+          <option value="all-rooms">See All Rooms</option>
+          <option value="date">See Rooms by Date</option>
+          <option value="type">See Rooms by Type</option>
+        </select>
+      </div>
+    </div>
+  </main>
+
+  
   
   <!-- Do not include the scripts.js or class files here - it is done by the webpack server -->
   <script src="bundle.js"></script>
