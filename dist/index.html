@@ -11,17 +11,19 @@
     <h1>The Overlook Hotel</h1>
   </nav>
   <main>
-    <div class="login-container ">
+    <div class="login-container  ">
       <h2>Login to The Overlook Hotel</h2>
-      <div class="login-input">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" />
-      </div>
-      <div>
-        <label for="password">Password:</label>
-        <input type="password" id="pass" name="password" minlength="12" required />
-      </div>
-      <input class="submit" type="submit" value="Sign in" />
+      <form class="login-form">
+        <div class="login-input">
+          <label for="username">Username:</label>
+          <input type="text" id="username" name="username" />
+        </div>
+        <div>
+          <label for="password">Password:</label>
+          <input type="password" id="pass" name="password" minlength="12" required />
+        </div>
+        <input class="submit" type="submit" value="Sign in" />
+      </form>
     </div>
     <div class="dashboard hidden">
       <h class="welcome">Welcome Back!</h2>
@@ -34,22 +36,31 @@
           <option value="past">Past Bookings</option>
         </select>
       </div>
-    </div>
-    <div class="booking hidden"> 
       <div>
         <label for="search-select">What would you like to Do?:</label>
         <select name="search-options" id="search-select">
           <option value="">--Please choose an option--</option>
           <option value="all-rooms">See All Rooms</option>
-          <option value="date">See Rooms by Date</option>
-          <option value="type">See Rooms by Type</option>
+          <option value="availabele">See All Available Rooms</option>
+          <option value="date">See Avaialable Rooms by Date</option>
+          <option value="type">See Available Rooms by Type</option>
         </select>
       </div>
     </div>
+    <section class="results-all-rooms hidden ">
+      <div>
+        <button class="back-">Go Back</button>
+      </div>
+      <grid>
+        <h5 class="room-num"> Room Number</h5>
+        <h5 class="room-type">Room Type</h5>
+        <h5 class="beds">Beds</h5>
+        <h5 class="date">Date</h5>
+        <h5 class="cost">Cost</h5>
+      </grid>
+      <ul id="room-list"></ul>
+    </section>
   </main>
-
-  
-  
   <!-- Do not include the scripts.js or class files here - it is done by the webpack server -->
   <script src="bundle.js"></script>
 
