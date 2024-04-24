@@ -20,7 +20,8 @@ The basis of this project was to build a web application that allows users to lo
 
 
 
-Contributors:
+Contributor:
+
 Lydia Sims: https://github.com/LISims88 
 
 Learning Goals:
