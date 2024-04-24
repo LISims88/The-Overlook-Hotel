@@ -27,7 +27,7 @@ let customers;
 let rooms;
 let bookings;
 let userId
-
+let available = [ ]
 const gridContent = {
     'pastBookings': `
         <tr>
@@ -68,14 +68,6 @@ const gridContent = {
 };
 
 
-//functions to use
-// let roomsByDate = filterRoomsByDate(rooms,bookings, date);
-// let roomsByType = filterRoomsByType(rooms, type)
-// let futureBookings = showFutureBooking(bookings, user);
-// let cost = calculateCostPerNight(rooms, roomNumber, days = 1);
-// let futureBookingCosts = calculateFutureBookingCosts(bookings,rooms,days,user);
-// let pastBookingCosts = calculatePastBookingCosts(bookings,rooms,days,user);
-// let allBookingCosts = calculateAllBookingCosts(bookings,rooms,days,user)
 
 //Event Listeners
 document.addEventListener('DOMContentLoaded', () => {
@@ -99,8 +91,8 @@ document.addEventListener('DOMContentLoaded', () => {
 loginForm.addEventListener('submit', (event) => {
     event.preventDefault();
     let usernameField = document.getElementById('username').value;
-    const passwordField = document.getElementById('pass').value;
-
+    const passwordField = document.getElementById('password').value;
+    
     userId = getUserIdFromUsername(usernameField, customers);
     if (userId) {
         const user = usernameField; 
@@ -115,11 +107,13 @@ loginForm.addEventListener('submit', (event) => {
 });
 searchSelect.addEventListener('change',(event) => {
     const selectedValue = event.target.value;
-    if(selectedValue === 'pastBookings'){
+    if(selectedValue === 'past'){
         renderPastBookings(userId,selectedValue)
-    }else {
+    } else if (selectedValue === 'future'){
         renderfutureBookings(userId, selectedValue)
     }
+    
+    
 })
 back.addEventListener('click', function(){
     results.classList.add('hidden');
@@ -144,7 +138,7 @@ function welcomeUser (userId, customers){
     const user = customers?.customers.find(customer => customer.id === userId);
     if (user) {
         console.log('Welcome, ' + user.name);
-         name.innerHTML = user.name
+        name.innerHTML = user.name
     } else {
         console.error('User not found');
     }
@@ -159,13 +153,12 @@ function renderPastBookings (userId, selectedValue){
         return;
     }
     let user = customers?.customers.find(customer => customer.id === userId);
-   
-
+    
+    
     let pastBookings = showPastBookings(bookings.bookings, userId);
-    //console.log('Past Bookings:', pastBookings);
-
+    console.log('Past Bookings:', pastBookings);
+    
     pastBookings.forEach(booking => {
-        console.log(booking)
         const tr = document.createElement('tr');
         
         const bookingIdCell = document.createElement('td');
@@ -175,7 +168,7 @@ function renderPastBookings (userId, selectedValue){
         const userIdCell = document.createElement('td');
         userIdCell.textContent = booking.userID;
         tr.appendChild(userIdCell);
-               
+        
         const dateCell = document.createElement('td');
         dateCell.textContent = booking.date;
         tr.appendChild(dateCell);
@@ -183,24 +176,32 @@ function renderPastBookings (userId, selectedValue){
         const roomNumberCell = document.createElement('td');
         roomNumberCell.textContent = booking.roomNumber;
         tr.appendChild(roomNumberCell);
-    
+        
         list.appendChild(tr);
     });
-
+    
     dashboard.classList.add('hidden');
     results.classList.remove('hidden');
     updateGridItems('pastBookings');
 };
-function renderfutureBookings (userId, selectedValue){
+function renderfutureBookings(userId, selectedValue) {
     if (!userId) {
         console.error('User ID not provided');
         return;
     }
+    
     let user = customers?.customers.find(customer => customer.id === userId);
     let futureBookings = showFutureBooking(bookings.bookings, userId);
-    console.log('future',futureBookings)
+    
+    if (futureBookings.length === 0) {
+        console.log('No future bookings found.');
+        alert('No future bookings found.')
+        return; // Do nothing if there are no future bookings
+    }
+    
+    console.log('Future bookings:', futureBookings);
+    
     futureBookings.forEach(booking => {
-        console.log(booking)
         const tr = document.createElement('tr');
         
         const bookingIdCell = document.createElement('td');
@@ -210,7 +211,7 @@ function renderfutureBookings (userId, selectedValue){
         const userIdCell = document.createElement('td');
         userIdCell.textContent = booking.userID;
         tr.appendChild(userIdCell);
-               
+        
         const dateCell = document.createElement('td');
         dateCell.textContent = booking.date;
         tr.appendChild(dateCell);
@@ -218,11 +219,31 @@ function renderfutureBookings (userId, selectedValue){
         const roomNumberCell = document.createElement('td');
         roomNumberCell.textContent = booking.roomNumber;
         tr.appendChild(roomNumberCell);
-    
+        
         list.appendChild(tr);
     });
-
+    
     dashboard.classList.add('hidden');
     results.classList.remove('hidden');
     updateGridItems('futureBookings');
 };
+
+function renderRoomsByDate(selectedDate){
+    
+let roomsByDate = filterRoomsByDate(rooms,bookings, date);
+}
+// function renderRoomsByType(){
+
+// }
+
+// function showCosts (){
+    
+        
+//}
+//functions to use
+// let roomsByType = filterRoomsByType(rooms, type)
+// let cost = calculateCostPerNight(rooms, roomNumber, days = 1);
+// let futureBookingCosts = calculateFutureBookingCosts(bookings,rooms,days,user);
+// let pastBookingCosts = calculatePastBookingCosts(bookings,rooms,days,user);
+// let allBookingCosts = calculateAllBookingCosts(bookings,rooms,days,user)
+// }

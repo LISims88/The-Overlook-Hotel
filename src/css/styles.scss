@@ -7,18 +7,7 @@ body {
   background-position: cover;
   background-size: 100%;
   background-repeat: no-repeat;
-  opacity: 75;
-  body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh; /* Ensures the content fills the viewport */
-  margin: 0; /* Removes default body margin */
-  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-  background: #fff1d0;
-}
-
-  
+  opacity: 75;  
 }
 nav {
   background: #d0deff;
@@ -58,7 +47,7 @@ div.grid{
   flex-direction: row;
   background-color: #d0deff;
   margin-left: 245px;
-  margin-right: 245px;
+  margin-right: 217px;
   padding-bottom: 20px;
   padding-top: 5px;
   align-content: space-evenly;
@@ -102,4 +91,12 @@ div.grid {
 tr {
   display: flex;
   justify-content: space-evenly; /* Add space between td elements */
+}
+div.button{
+  margin-left: 245px;
+  margin-right: 217px;
+}
+div.room-options{
+  display: flex;
+  flex-direction: row;
 }
