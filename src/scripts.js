@@ -10,6 +10,7 @@ import { createLogin, filterRoomsByDate, filterRoomsByType} from "./booking";
 import { calculateAllBookingCosts, calculateCostPerNight, calculateFutureBookingCosts, showFutureBooking, showPastBookings } from './customer';
 import {accessCustomerData,accessRoomData,accessBookingData} from "./apiCalls";
 
+
 //Dom Elements
 const login = document.querySelector('.login-container');
 const loginForm = document.querySelector('.login-form');
@@ -21,6 +22,7 @@ const list = document.querySelector('#room-list');
 const grid = document.querySelector('.grid')
 let name = document.querySelector('.name');
 const back = document.querySelector('.back')
+const dateInput = document.querySelector('#date')
 
 //Global API variables 
 let customers;
@@ -119,6 +121,17 @@ back.addEventListener('click', function(){
     results.classList.add('hidden');
     dashboard.classList.remove('hidden');
 })
+
+dateInput.addEventListener('change', (event) =>{
+    const selectedDate= event.target.value
+    renderRoomsByDate(selectedDate)
+})
+
+
+
+
+
+
 //Event Handlers
 function getUserIdFromUsername(username, customers) {
     const userIdMatches = username.match(/\d+/);
@@ -222,27 +235,51 @@ function renderfutureBookings(userId, selectedValue) {
         
         list.appendChild(tr);
     });
-    
     dashboard.classList.add('hidden');
     results.classList.remove('hidden');
     updateGridItems('futureBookings');
 };
 
 function renderRoomsByDate(selectedDate){
-    
-let roomsByDate = filterRoomsByDate(rooms,bookings, date);
-}
-// function renderRoomsByType(){
+    available.length = 0;
+    const date = new Date(selectedDate);
+    const roomsByDate = filterRoomsByDate(rooms.rooms,bookings.bookings, date);
+    if (roomsByDate.length === 0) {
+        console.log('No rooms available for the selected date.');
+        alert('No rooms available for the selected date.')
+        return;
+    }
+    roomsByDate.forEach(room =>
+        available.push(room)
+    )
 
-// }
+    dashboard.classList.add('hidden');
+    results.classList.remove('hidden');
+    updateGridItems('roomsByDate');
+    return available
+}
+ function renderRoomsByType(selectedType){
+    available.length = 0
+    let roomsByType = filterRoomsByType(rooms.rooms, type)
+    if (roomsByType.length === 0) {
+        console.log('No rooms available for the selected type.');
+        alert('No rooms available for the selected type.')
+        return;
+    }
+    roomsByType.forEach(room => {
+        available.push(room)
+    })
+    dashboard.classList.add('hidden');
+    results.classList.remove('hidden');
+    updateGridItems('roomsBytype');
+    return available
+ }
 
 // function showCosts (){
-    
-        
-//}
+//     let cost = calculateCostPerNight(rooms, roomNumber, days = 1)
+// }
 //functions to use
-// let roomsByType = filterRoomsByType(rooms, type)
-// let cost = calculateCostPerNight(rooms, roomNumber, days = 1);
+
 // let futureBookingCosts = calculateFutureBookingCosts(bookings,rooms,days,user);
 // let pastBookingCosts = calculatePastBookingCosts(bookings,rooms,days,user);
 // let allBookingCosts = calculateAllBookingCosts(bookings,rooms,days,user)
