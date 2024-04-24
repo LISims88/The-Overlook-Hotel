@@ -1,25 +1,33 @@
 import { expect } from "chai";
-import { createLogin, filterRoomsByDate, filterRoomsByType, findAvailableRooms } from "../src/booking";
+import { createLogin, filterRoomsByDate, filterRoomsByType } from "../src/booking";
 import { users, rooms, bookings} from "./mock-data";
 
 describe("login", () => {
     it("should create a login", () => {
-        let user = users[0].id
+        let user = 1
         const login = createLogin(`customer${user}`, "overlook2021")
-        expect(login).to.deep.equal({username: 'customer1', password: "overlook2021"})
+        expect(login).to.deep.equal({username: `customer${user}`, password: "overlook2021"})
     });
     it("should create a different login", () => {
-        let user = users[1].id
+        let user = 2
         const login = createLogin(`customer${user}`, "overlook2021")
-        expect(login).to.deep.equal({username: 'customer2', password: "overlook2021"})
+        expect(login).to.deep.equal({username: `customer${user}`, password: "overlook2021"})
     });
     it("should not accept an incorrect login", () => {
         const login = createLogin('lady12',"lovebug1")
-        expect(login).to.equal('Invalid username and/or password')
+        expect(login).to.equal('Invalid username format')
     });
     it("should not create a user with partial data", () => {
         const login = createLogin('customer1',"")
         expect(login).to.equal('Please fill out inputs')
+    });
+    it("should not accept a username that does not follow the expected format", () => {
+        const login = createLogin('customer', "overlook2021");
+        expect(login).to.equal('Invalid username format');
+    });
+    it("should not accept null or undefined inputs", () => {
+        const login = createLogin(null, null);
+        expect(login).to.equal('Please fill out inputs');
     });
 });
 describe("Booking a room", () => {

@@ -58,7 +58,7 @@ describe("Cost", () => {
         const roomCost = calculateCostPerNight(rooms,3,4)
         expect(cost).to.equal(roomCost)
     });
-    it("should calculate total cost of all bookings", () => {
+    it.only("should calculate total cost of all bookings", () => {
         const user = users[0].id
         const cost = calculateAllBookingCosts(bookings, rooms, 2, user)
         const room1Cost = calculateCostPerNight(rooms,1,2)

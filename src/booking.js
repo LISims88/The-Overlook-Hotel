@@ -1,16 +1,18 @@
-const createLogin = (user,password)=> {
-    let login ={
-        username:`${user}`,
-        password:"overlook2021"
+const createLogin = (user, password) => {
+    if (!user || !password) {
+        return 'Please fill out inputs';
     }
-    if(!user || !password){
-        return 'Please fill out inputs'
-    } else if (user !== login.username || password !== login.password){
-        return 'Invalid username and/or password'
-    } else {
-        return login
+    const usernamePattern = /^customer([1-50])$/;
+    if (!usernamePattern.test(user)) {
+        return 'Invalid username format';
     }
-}
+    if (password !== "overlook2021") {
+        return 'Invalid password';
+    }
+    console.log('Successful Login');
+    return { username: user, password: password };
+};
+
 const filterRoomsByDate = (rooms, bookings, date) => {
     let bookedRooms = [];
     bookings.forEach(booking => {
