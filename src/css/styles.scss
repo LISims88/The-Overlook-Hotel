@@ -8,6 +8,16 @@ body {
   background-size: 100%;
   background-repeat: no-repeat;
   opacity: 75;
+  body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Ensures the content fills the viewport */
+  margin: 0; /* Removes default body margin */
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  background: #fff1d0;
+}
+
   
 }
 nav {
@@ -41,11 +51,14 @@ h2{
   margin-top: 10px;
 }
 
-grid{
+div.grid{
   display: flex;
+  align-items: center;
+  text-align: center;
+  flex-direction: row;
   background-color: #d0deff;
-  margin-left: 25%;
-  margin-right: 25%;
+  margin-left: 245px;
+  margin-right: 245px;
   padding-bottom: 20px;
   padding-top: 5px;
   align-content: space-evenly;
@@ -54,6 +67,39 @@ h5{
   padding-left: 25px;
   padding-right: 75px;
 }
-div.dashboar{
+div.dashboard{
   justify-content: center;
+}
+div.back{
+  padding-left: 25%;
+  padding-right:25%;
+}
+section{
+  display: flex;
+  flex-direction: column;
+}
+ul{
+  margin-top: 0;
+  display: inline; 
+  background-color: #d0deff;
+  text-align: justify;
+  padding-bottom: 1%;
+  margin-left: 11%;
+  margin-right: 25%;
+  width:444px;
+  align-items: center;
+  align-content: center;
+  padding-left: 44px;
+  margin-left: 245px;
+  margin-right: 245px;
+}
+div.back,
+section,
+div.grid {
+  display: flex;
+  justify-content: center;
+}
+tr {
+  display: flex;
+  justify-content: space-evenly; /* Add space between td elements */
 }

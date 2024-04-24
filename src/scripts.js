@@ -4,58 +4,225 @@
 //console.log('This is the JavaScript entry file - your code begins here.');
 // An example of how you tell webpack to use a CSS (SCSS) file
 // An example of how you tell webpack to use an image (also need to link to it in the index.html)
+//Impr=orts
 import './css/styles.scss';
-import { createLogin} from "./booking"
-import {accessCustomerData,accessRoomData,accessBookingData} from "./apiCalls"
+import { createLogin, filterRoomsByDate, filterRoomsByType} from "./booking";
+import { calculateAllBookingCosts, calculateCostPerNight, calculateFutureBookingCosts, showFutureBooking, showPastBookings } from './customer';
+import {accessCustomerData,accessRoomData,accessBookingData} from "./apiCalls";
 
-const login = document.querySelector('.login-container')
-const dashboard = document.querySelector('.dashboard')
-const results = document.querySelector('.results')
-const submit = document.querySelector('.submit')
-let name = document.querySelector('.name')
-const loginForm = document.querySelector('.login-form')
-var customers;
-var rooms;
-var bookings;
+//Dom Elements
+const login = document.querySelector('.login-container');
+const loginForm = document.querySelector('.login-form');
+const dashboard = document.querySelector('.dashboard');
+const searchSelect = document.getElementById('search-select')
+const roomSelect = document.getElementById('rooms-select') 
+const results = document.querySelector('.results');
+const list = document.querySelector('#room-list');
+const grid = document.querySelector('.grid')
+let name = document.querySelector('.name');
+const back = document.querySelector('.back')
+
+//Global API variables 
+let customers;
+let rooms;
+let bookings;
+let userId
+
+const gridContent = {
+    'pastBookings': `
+        <tr>
+            <th>Booking ID</th>
+            <th>User ID</th>
+            <th>Date</th>
+            <th>Room Number</th>
+        </tr>
+    `,
+    'futureBookings': `
+        <tr>
+            <th>Booking ID</th>
+            <th>User ID</th>
+            <th>Date</th>
+            <th>Room Number</th>
+        </tr>
+    `,
+    'roomsByDate': `
+        <tr>
+            <th>Room Number</th>
+            <th>Room Type</th>
+            <th>Bidet</th>
+            <th>Bed Size</th>
+            <th>Number of Beds</th>
+            <th>Cost per Night</th>
+        </tr>
+    `,
+    'roomsByType': `
+        <tr>
+            <th>Room Number</th>
+            <th>Room Type</th>
+            <th>Bidet</th>
+            <th>Bed Size</th>
+            <th>Number of Beds</th>
+            <th>Cost per Night</th>
+        </tr>
+    `
+};
 
 
+//functions to use
+// let roomsByDate = filterRoomsByDate(rooms,bookings, date);
+// let roomsByType = filterRoomsByType(rooms, type)
+// let futureBookings = showFutureBooking(bookings, user);
+// let cost = calculateCostPerNight(rooms, roomNumber, days = 1);
+// let futureBookingCosts = calculateFutureBookingCosts(bookings,rooms,days,user);
+// let pastBookingCosts = calculatePastBookingCosts(bookings,rooms,days,user);
+// let allBookingCosts = calculateAllBookingCosts(bookings,rooms,days,user)
 
+//Event Listeners
 document.addEventListener('DOMContentLoaded', () => {
     accessCustomerData()
+    .then(data =>{
+        customers = data
+        console.log('Customers',customers)
+    })
     accessRoomData()
+    .then(data =>{
+        rooms = data
+        console.log('rooms',rooms)
+    })
     accessBookingData()
-    
+    .then(data =>{
+        bookings = data
+        console.log('bookings',bookings)
+    })
 })
 
 loginForm.addEventListener('submit', (event) => {
     event.preventDefault();
     let usernameField = document.getElementById('username').value;
     const passwordField = document.getElementById('pass').value;
-    let userId = usernameField.match(/\d+/);
-    let user;
+
+    userId = getUserIdFromUsername(usernameField, customers);
     if (userId) {
-        let customer = userId[0];
-        let userPrefix = usernameField.replace(customer, "")
-        user = userPrefix + customer;
+        const user = usernameField; 
+        createLogin(user, passwordField, userId);
+        login.classList.add('hidden');
+        dashboard.classList.remove('hidden');
+        console.log(customers)
+        welcomeUser(userId, customers);
     } else {
-        userId = ""; 
-        user = ""; 
+        console.log('User ID not found');
     }
-    createLogin(user, passwordField,userId);
-    login.classList.add('hidden')
-    dashboard.classList.remove('hidden')
-    welcomeUser(customers)
 });
+searchSelect.addEventListener('change',(event) => {
+    const selectedValue = event.target.value;
+    if(selectedValue === 'pastBookings'){
+        renderPastBookings(userId,selectedValue)
+    }else {
+        renderfutureBookings(userId, selectedValue)
+    }
+})
+back.addEventListener('click', function(){
+    results.classList.add('hidden');
+    dashboard.classList.remove('hidden');
+})
+//Event Handlers
+function getUserIdFromUsername(username, customers) {
+    const userIdMatches = username.match(/\d+/);
+    if (userIdMatches) {
+        const userId = parseInt(userIdMatches[0]); 
+        const user = customers.customers.find(customer => `customer${customer.id}` === username);
+        if (user) {
+            return userId;
+        } else {
+            return null;
+        }
+    } else {
+        return null;
+    }
+}
+function welcomeUser (userId, customers){
+    const user = customers?.customers.find(customer => customer.id === userId);
+    if (user) {
+        console.log('Welcome, ' + user.name);
+         name.innerHTML = user.name
+    } else {
+        console.error('User not found');
+    }
+}
+function updateGridItems(contentType ){
+    const htmlContent = gridContent[contentType] || ''
+    grid.innerHTML = htmlContent
+}
+function renderPastBookings (userId, selectedValue){
+    if (!userId) {
+        console.error('User ID not provided');
+        return;
+    }
+    let user = customers?.customers.find(customer => customer.id === userId);
+   
 
+    let pastBookings = showPastBookings(bookings.bookings, userId);
+    //console.log('Past Bookings:', pastBookings);
 
-const welcomeUser = (user) =>{
-    console.log(user);
-    //console.log(customersData[0]); 
-    //console.log(customersData.length);
-
+    pastBookings.forEach(booking => {
+        console.log(booking)
+        const tr = document.createElement('tr');
+        
+        const bookingIdCell = document.createElement('td');
+        bookingIdCell.textContent = booking.id;
+        tr.appendChild(bookingIdCell);
+        
+        const userIdCell = document.createElement('td');
+        userIdCell.textContent = booking.userID;
+        tr.appendChild(userIdCell);
+               
+        const dateCell = document.createElement('td');
+        dateCell.textContent = booking.date;
+        tr.appendChild(dateCell);
+        
+        const roomNumberCell = document.createElement('td');
+        roomNumberCell.textContent = booking.roomNumber;
+        tr.appendChild(roomNumberCell);
     
- //customersData.customer.name = name.innerHTML
-} 
+        list.appendChild(tr);
+    });
 
+    dashboard.classList.add('hidden');
+    results.classList.remove('hidden');
+    updateGridItems('pastBookings');
+};
+function renderfutureBookings (userId, selectedValue){
+    if (!userId) {
+        console.error('User ID not provided');
+        return;
+    }
+    let user = customers?.customers.find(customer => customer.id === userId);
+    let futureBookings = showFutureBooking(bookings.bookings, userId);
+    console.log('future',futureBookings)
+    futureBookings.forEach(booking => {
+        console.log(booking)
+        const tr = document.createElement('tr');
+        
+        const bookingIdCell = document.createElement('td');
+        bookingIdCell.textContent = booking.id;
+        tr.appendChild(bookingIdCell);
+        
+        const userIdCell = document.createElement('td');
+        userIdCell.textContent = booking.userID;
+        tr.appendChild(userIdCell);
+               
+        const dateCell = document.createElement('td');
+        dateCell.textContent = booking.date;
+        tr.appendChild(dateCell);
+        
+        const roomNumberCell = document.createElement('td');
+        roomNumberCell.textContent = booking.roomNumber;
+        tr.appendChild(roomNumberCell);
+    
+        list.appendChild(tr);
+    });
 
-
+    dashboard.classList.add('hidden');
+    results.classList.remove('hidden');
+    updateGridItems('futureBookings');
+};

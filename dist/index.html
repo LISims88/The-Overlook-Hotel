@@ -20,7 +20,7 @@
         </div>
         <div>
           <label for="password">Password:</label>
-          <input type="password" id="pass" name="password" minlength="12" required />
+          <input type="password" id="password" name="password" minlength="12" required />
         </div>
         <input class="submit" type="submit" value="Sign in" />
       </form>
@@ -38,7 +38,7 @@
       </div>
       <div>
         <label for="search-select">What would you like to Do?:</label>
-        <select name="search-options" id="search-select">
+        <select name="search-options" id="rooms-select">
           <option value="">--Please choose an option--</option>
           <option value="all-rooms">See All Rooms</option>
           <option value="availabele">See All Available Rooms</option>
@@ -47,18 +47,18 @@
         </select>
       </div>
     </div>
-    <section class="results-all-rooms hidden ">
+    <section class="results hidden ">
       <div>
-        <button class="back-">Go Back</button>
+        <button class="back">Go Back</button>
       </div>
-      <grid>
+      <div class="grid">
         <h5 class="room-num"> Room Number</h5>
         <h5 class="room-type">Room Type</h5>
         <h5 class="beds">Beds</h5>
         <h5 class="date">Date</h5>
         <h5 class="cost">Cost</h5>
-      </grid>
-      <ul id="room-list"></ul>
+      </div>
+      <ul id="room-list"></ol>
     </section>
   </main>
   <!-- Do not include the scripts.js or class files here - it is done by the webpack server -->
