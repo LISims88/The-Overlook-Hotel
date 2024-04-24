@@ -46,16 +46,16 @@ h2{
 }
 
 div.grid{
-  display: flex;
+  display: table;
   align-items: center;
   text-align: center;
   flex-direction: row;
   background-color: #d0deff;
-  margin-left: 245px;
+  margin-left: 217px;
   margin-right: 217px;
   padding-bottom: 20px;
   padding-top: 5px;
-  align-content: space-evenly;
+  align-content: space-between;
 }
 h5{
   padding-left: 25px;
@@ -74,13 +74,13 @@ section{
 }
 ul{
   margin-top: 0;
-  display: inline; 
+  display: table-row; 
   background-color: #d0deff;
   text-align: justify;
   padding-bottom: 1%;
   margin-left: 11%;
   margin-right: 25%;
-  width: 488px;
+  width: 60%;
   align-items: center;
   align-content: center;
   padding-left: 0px;
@@ -88,20 +88,40 @@ ul{
   margin-right: 245px;
 }
 div.back,
-section,
-div.grid {
+section {
   display: flex;
   justify-content: center;
 }
 tr {
-  display: flex;
-  justify-content: space-evenly; /* Add space between td elements */
+  display:flex;
+  justify-content: space-between;
+  border: 1px solid black;
 }
 div.button{
-  margin-left: 245px;
+  margin-left: 217px;
   margin-right: 217px;
 }
 div.room-options{
   display: flex;
   flex-direction: row;
+}
+a:hover{
+  text-decoration: underline;
+}
+a{
+  color: blue;
+}
+.results{
+  position: relative;
+}
+#room-list{
+  position: relative;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.container > * {
+  width: 100%;
 }

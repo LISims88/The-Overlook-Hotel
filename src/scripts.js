@@ -8,7 +8,7 @@
 import './css/styles.scss';
 import { createLogin, filterRoomsByDate, filterRoomsByType} from "./booking";
 import { calculatePastBookingCosts, calculateCostPerNight, calculateFutureBookingCosts, showFutureBooking, showPastBookings } from './customer';
-import {accessCustomerData,accessRoomData,accessBookingData} from "./apiCalls";
+import {accessCustomerData,accessRoomData,accessBookingData, postBookingData} from "./apiCalls";
 //Dom Elements
 const login = document.querySelector('.login-container');
 const loginForm = document.querySelector('.login-form');
@@ -28,7 +28,6 @@ let rooms;
 let bookings;
 let userId;
 let available = [ ];
-//const allBookingCosts = calculateAllBookingCosts(bookings,rooms,days,user)
 const gridContent = {
     'pastBookings': `
         <tr>
@@ -48,6 +47,7 @@ const gridContent = {
     `,
     'roomsByDate': `
         <tr>
+            <th> Click to book</th>
             <th>Room Number</th>
             <th>Room Type</th>
             <th>Bidet</th>
@@ -96,7 +96,6 @@ loginForm.addEventListener('submit', (event) => {
         createLogin(user, passwordField, userId);
         login.classList.add('hidden');
         dashboard.classList.remove('hidden');
-        console.log(customers)
         welcomeUser(userId, customers);
     } else {
         console.log('User ID not found');
@@ -116,6 +115,8 @@ back.addEventListener('click', function(){
     results.classList.add('hidden');
     dashboard.classList.remove('hidden');
     costElement.textContent = "Cost: 0.00"
+    list.innerHTML = ''
+    
 });
 dateInput.addEventListener('change', (event) =>{
     const selectedDate= event.target.value
@@ -166,7 +167,6 @@ function renderPastBookings (userId, selectedValue){
     
     
     const pastBookingCosts = calculatePastBookingCosts(bookings.bookings,rooms.rooms,days,userId);
-    console.log('Past Bookings:', pastBookings);
     
     pastBookings.forEach(booking => {
         const tr = document.createElement('tr');
@@ -214,8 +214,6 @@ function renderfutureBookings(userId, selectedValue) {
         return;
     }
     
-    console.log('Future bookings:', futureBookings);
-    
     futureBookings.forEach(booking => {
         const tr = document.createElement('tr');
         
@@ -256,11 +254,20 @@ function renderRoomsByDate(selectedDate){
     roomsByDate.forEach(room => {
         const tr = document.createElement('tr');
         
+        const buttonCell = document.createElement('td');
+        const button = document.createElement('button');
+        button.textContent = 'Book';
+        button.addEventListener('click', () => {
+            bookRooms(userId, date, room.number);
+        });
+        buttonCell.appendChild(button);
+        tr.appendChild(buttonCell);
+        
         const roomNumberCell = document.createElement('td');
         roomNumberCell.textContent = room.number;
         tr.appendChild(roomNumberCell);
         
-        const roomTypeCell = document.createElement('td');
+        const roomTypeCell = document.createElement('td'); 
         roomTypeCell.textContent = room.roomType;
         tr.appendChild(roomTypeCell);
         
@@ -300,13 +307,23 @@ function renderRoomsByType() {
     });
 
     if (available.length === 0) {
-        console.log('No rooms available for the selected type(s).');
+        console.log('No rooms available for the selected type.');
+        alert('No rooms available for the selected type.')
         return;
     }
 
     available.forEach(room => {
         const tr = document.createElement('tr');
-        
+        const buttonCell = document.createElement('td');
+        const button = document.createElement('button');
+        button.textContent = 'Book';
+        button.addEventListener('click', () => {
+            const currentDate = new Date()
+            bookRooms(userId, currentDate, room.number);
+        });
+        buttonCell.appendChild(button);
+        tr.appendChild(buttonCell);
+       
         const roomNumberCell = document.createElement('td');
         roomNumberCell.textContent = room.roomNumber;
         tr.appendChild(roomNumberCell);
@@ -341,6 +358,28 @@ function renderRoomsByType() {
 function updateCost(cost) {
     costElement.textContent = `Cost: ${cost.toFixed(2)}`
  }
-function bookRooms (){
-    
+
+function bookRooms(userId, date, roomNumber) {
+    const formattedDate = date.getFullYear() + '/' + ('0' + (date.getMonth() + 1)).slice(-2) + '/' + ('0' + date.getDate()).slice(-2);
+    const newBooking = {
+        userID: userId,  
+        date: formattedDate, 
+        roomNumber: roomNumber 
+    };
+    addBookedRooms(newBooking);
+    return newBooking;
 }
+
+function addBookedRooms(newBooking) {
+    postBookingData(newBooking)
+        .then((newBookingData) => {
+            console.log("Booking successful");
+            alert('New booking was made!');
+            accessBookingData();
+        })
+        .catch(error => {
+            console.error("Error while booking:", error);
+            alert("Something went wrong!");
+        });
+}
+
