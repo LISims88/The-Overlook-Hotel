@@ -7,20 +7,11 @@ body {
   background-position: cover;
   background-size: 100%;
   background-repeat: no-repeat;
-  opacity: 75;
-  body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh; /* Ensures the content fills the viewport */
-  margin: 0; /* Removes default body margin */
-  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-  background: #fff1d0;
-}
-
-  
+  opacity: 75;  
 }
 nav {
+  display: flex;
+  justify-content: space-between;
   background: #d0deff;
   align-items: center;
   padding-top:5px;
@@ -29,7 +20,10 @@ nav {
   margin-bottom: 55px;
   height: 50px;
   text-align: center;
-
+  }
+.cost{
+  margin-left: auto;
+  padding-bottom: 0;
 }
 div{
   display:flex;
@@ -58,7 +52,7 @@ div.grid{
   flex-direction: row;
   background-color: #d0deff;
   margin-left: 245px;
-  margin-right: 245px;
+  margin-right: 217px;
   padding-bottom: 20px;
   padding-top: 5px;
   align-content: space-evenly;
@@ -86,10 +80,10 @@ ul{
   padding-bottom: 1%;
   margin-left: 11%;
   margin-right: 25%;
-  width:444px;
+  width: 488px;
   align-items: center;
   align-content: center;
-  padding-left: 44px;
+  padding-left: 0px;
   margin-left: 245px;
   margin-right: 245px;
 }
@@ -102,4 +96,12 @@ div.grid {
 tr {
   display: flex;
   justify-content: space-evenly; /* Add space between td elements */
+}
+div.button{
+  margin-left: 245px;
+  margin-right: 217px;
+}
+div.room-options{
+  display: flex;
+  flex-direction: row;
 }

@@ -9,6 +9,9 @@
 <body>
   <nav>
     <h1>The Overlook Hotel</h1>
+    <div class="cost">
+      <h2>Cost: 0.00</h2>
+    </div>
   </nav>
   <main>
     <div class="login-container  ">
@@ -37,18 +40,25 @@
         </select>
       </div>
       <div>
-        <label for="search-select">What would you like to Do?:</label>
-        <select name="search-options" id="rooms-select">
-          <option value="">--Please choose an option--</option>
-          <option value="all-rooms">See All Rooms</option>
-          <option value="availabele">See All Available Rooms</option>
-          <option value="date">See Avaialable Rooms by Date</option>
-          <option value="type">See Available Rooms by Type</option>
-        </select>
+        <div>
+          <p>Search by Date</p>
+          <input type="date" name="date-search" id="date">
+        </div>
+        <div class="room-options">
+          <p>Search by Room Type</p>
+          <input type="checkbox" id="residential" name="residential-suite" value="residential suite">
+          <label for="residential">Residential Suite</label><br>
+          <input type="checkbox" id="suite" name="suite" value="suite">
+          <label for="suite">Suite</label><br>
+          <input type="checkbox" id="single" name="single-room" value="single room">
+          <label for="single">Single Room</label><br>
+          <input type="checkbox" id="junior" name="junior-suite" value="junior suite">
+          <label for="junior"> Junior Suite</label><br>
+        </div>
       </div>
     </div>
     <section class="results hidden ">
-      <div>
+      <div class="button">
         <button class="back">Go Back</button>
       </div>
       <div class="grid">
