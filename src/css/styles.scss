@@ -10,6 +10,8 @@ body {
   opacity: 75;  
 }
 nav {
+  display: flex;
+  justify-content: space-between;
   background: #d0deff;
   align-items: center;
   padding-top:5px;
@@ -18,7 +20,10 @@ nav {
   margin-bottom: 55px;
   height: 50px;
   text-align: center;
-
+  }
+.cost{
+  margin-left: auto;
+  padding-bottom: 0;
 }
 div{
   display:flex;
@@ -75,10 +80,10 @@ ul{
   padding-bottom: 1%;
   margin-left: 11%;
   margin-right: 25%;
-  width:444px;
+  width: 488px;
   align-items: center;
   align-content: center;
-  padding-left: 44px;
+  padding-left: 0px;
   margin-left: 245px;
   margin-right: 245px;
 }
