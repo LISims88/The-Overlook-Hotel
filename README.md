@@ -20,7 +20,7 @@ In the terminal run `npm test`
 
 The basis of this project was to build a web application that allows users to login, view upcoming and past bookings, see how much it costs and book by day and room type. Based on the users experience the user can book a room and see how much it will cost them for the room per night. The website's functionality is very basic and has room for more complex features to be added in the future. This project took abott 30 hours to complete in the span of a week
 
-![image](src/images/the overlook hotel.png)
+[![image](src/images/the overlook hotel.png)]
 
 Contributor:
 
