@@ -2,18 +2,18 @@
 
 ## Installation and Set Up Instructions:
 
-Clone down the repsository into your preferred directory using SSH `git clone git@github.com:LISims88/The-Overlook-Hotel.git`
-Clone the back end repository using SSH `git clone git@github.com:turingschool-examples/overlook-api.git`
-Change into the directory `cd the-overlook-hotel`
-Install dependencies by running npm install in your terminal
-run npm start in your terminal
-Navigate to http://localhost:8080/ in you browser
+- Clone down the repsository into your preferred directory using SSH `git clone git@github.com:LISims88/The-Overlook-Hotel.git`
+- Clone the back end repository using SSH `git clone git@github.com:turingschool-examples/overlook-api.git`
+- Change into the directory `cd the-overlook-hotel`
+- Install dependencies by running `npm install` in your terminal
+- run `npm start` in your terminal
+-vNavigate to `http://localhost:8080/` in you browser
 ** Do not run npm audit fix --force, as this will update to an incompatible version of web-pack. **
 
 ## Running Tests:
 Testing can be done from the main directory of the project.
 
-In the terminal run npm test
+In the terminal run `npm test`
 
 ## Context:
 The basis of this project was to build a web application that allows users to login, view upcoming and past bookings, see how much it costs and book by day and room type. Based on the users experience the user can book a room and see how much it will cost them for the room per night. The website's functionality is very basic and has room for more complex features to be added in the future. This project took abott 30 hours to complete in the span of a week
