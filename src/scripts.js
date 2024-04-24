@@ -314,6 +314,15 @@ function renderRoomsByType() {
 
     available.forEach(room => {
         const tr = document.createElement('tr');
+        const buttonCell = document.createElement('td');
+        const button = document.createElement('button');
+        button.textContent = 'Book';
+        button.addEventListener('click', () => {
+            const currentDate = new Date()
+            bookRooms(userId, currentDate, room.number);
+        });
+        buttonCell.appendChild(button);
+        tr.appendChild(buttonCell);
        
         const roomNumberCell = document.createElement('td');
         roomNumberCell.textContent = room.roomNumber;
