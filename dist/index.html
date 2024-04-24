@@ -42,7 +42,8 @@
       <div>
         <div>
           <p>Search by Date</p>
-          <input type="date" name="date-search" id="date">
+          <input type="date" name="date-search" id="date" value="yyyy/mm/dd">
+          <label for="date-search">date</label>
         </div>
         <div class="room-options">
           <p>Search by Room Type</p>
@@ -58,17 +59,19 @@
       </div>
     </div>
     <section class="results hidden ">
-      <div class="button">
-        <button class="back">Go Back</button>
-      </div>
-      <div class="grid">
-        <h5 class="room-num"> Room Number</h5>
-        <h5 class="room-type">Room Type</h5>
-        <h5 class="beds">Beds</h5>
-        <h5 class="date">Date</h5>
-        <h5 class="cost">Cost</h5>
-      </div>
-      <ul id="room-list"></ol>
+      <div class="container">
+        <div class="button">
+          <button class="back">Go Back</button>
+        </div>
+        <div class="grid">
+          <h5 class="room-num"> Room Number</h5>
+          <h5 class="room-type">Room Type</h5>
+          <h5 class="beds">Beds</h5>
+          <h5 class="date">Date</h5>
+          <h5 class="cost">Cost</h5>
+        </div>
+        <ul id="room-list"></ul>
+    </div>
     </section>
   </main>
   <!-- Do not include the scripts.js or class files here - it is done by the webpack server -->
