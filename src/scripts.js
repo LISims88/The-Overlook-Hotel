@@ -15,13 +15,14 @@ const loginForm = document.querySelector('.login-form');
 const dashboard = document.querySelector('.dashboard');
 const searchSelect = document.getElementById('search-select')
 const results = document.querySelector('.results');
-const list = document.querySelector('#room-list');
+const list = document.querySelector('.room-list');
 const grid = document.querySelector('.grid')
 let name = document.querySelector('.name');
 const back = document.querySelector('.back')
 const dateInput = document.querySelector('#date')
 const checkboxes = document.querySelectorAll('.room-options input[type="checkbox"]');
 const costElement = document.querySelector('.cost h2')
+const booked = document.querySelector('.booked')
 //Global API Variables/ Variables
 let customers;
 let rooms;
@@ -105,8 +106,11 @@ searchSelect.addEventListener('change',(event) => {
     const selectedValue = event.target.value;
     if(selectedValue === 'past'){
         renderPastBookings(userId,selectedValue)
+        booked.classList.add('hidden')
+        list.classList.remove("hidden")
     } else if (selectedValue === 'future'){
-        renderfutureBookings(userId, selectedValue)
+        renderFutureBookings(userId, selectedValue)
+        booked.classList.remove('hidden')
     }
     
     
@@ -165,7 +169,6 @@ function renderPastBookings (userId, selectedValue){
     }
     let user = customers?.customers.find(customer => customer.id === userId);
     
-    
     const pastBookingCosts = calculatePastBookingCosts(bookings.bookings,rooms.rooms,days,userId);
     
     pastBookings.forEach(booking => {
@@ -195,17 +198,16 @@ function renderPastBookings (userId, selectedValue){
     updateGridItems('pastBookings');
     updateCost(pastBookingCosts)
 };
-function renderfutureBookings(userId, selectedValue) {
+function renderFutureBookings(userId, selectedValue) {
+    if (!userId || !customers || !bookings) {
+        console.error('User ID, customers, or bookings data not provided.');
+        return;
+    }
+
     let days = 1;
     const cost = calculateCostPerNight(rooms.rooms, rooms.roomNumber, days);
     const futureBookingCosts = calculateFutureBookingCosts(bookings.bookings, rooms.rooms, days, userId);
     
-    if (!userId) {
-        console.error('User ID not provided');
-        return;
-    }
-    
-    let user = customers?.customers.find(customer => customer.id === userId);
     let futureBookings = showFutureBooking(bookings.bookings, userId);
     
     if (futureBookings.length === 0) {
@@ -233,7 +235,7 @@ function renderfutureBookings(userId, selectedValue) {
         roomNumberCell.textContent = booking.roomNumber;
         tr.appendChild(roomNumberCell);
         
-        list.appendChild(tr);
+        booked.appendChild(tr);
     });
     
     // Update the cost in the UI
@@ -241,8 +243,10 @@ function renderfutureBookings(userId, selectedValue) {
     
     dashboard.classList.add('hidden');
     results.classList.remove('hidden');
+    list.classList.add('hidden')
     updateGridItems('futureBookings');
-};
+}
+
 function renderRoomsByDate(selectedDate){
     const date = new Date(selectedDate);
     const roomsByDate = filterRoomsByDate(rooms.rooms,bookings.bookings, date);
@@ -319,7 +323,9 @@ function renderRoomsByType() {
         button.textContent = 'Book';
         button.addEventListener('click', () => {
             const currentDate = new Date()
-            bookRooms(userId, currentDate, room.number);
+            const futureDate = new Date(currentDate);
+            futureDate.setDate(currentDate.getDate() + 5)
+            bookRooms(userId, futureDate, room.number);
         });
         buttonCell.appendChild(button);
         tr.appendChild(buttonCell);
@@ -352,6 +358,7 @@ function renderRoomsByType() {
     });
     dashboard.classList.add('hidden');
     results.classList.remove('hidden');
+    booked.classList.add('hidden')
     updateGridItems('roomsByType');
     
  };
@@ -366,20 +373,26 @@ function bookRooms(userId, date, roomNumber) {
         date: formattedDate, 
         roomNumber: roomNumber 
     };
-    addBookedRooms(newBooking);
-    return newBooking;
+    return addBookedRooms(newBooking);
+    
 }
 
 function addBookedRooms(newBooking) {
-    postBookingData(newBooking)
-        .then((newBookingData) => {
+    return postBookingData(newBooking)
+        .then(() => {
             console.log("Booking successful");
             alert('New booking was made!');
-            accessBookingData();
+            return accessBookingData();
+        })
+        .then(data => {
+            renderFutureBookings(userId, 'future', data);
+            booked.classList.remove('hidden')
         })
         .catch(error => {
             console.error("Error while booking:", error);
             alert("Something went wrong!");
+            throw error; // Re-throw the error to propagate it to the caller
         });
 }
+
 
