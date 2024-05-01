@@ -19,6 +19,7 @@ const calculateCostPerNight = (rooms, roomNumber, days = 1) => {
             cost += room.costPerNight * days; 
         }
     });
+    console.log(cost)
     return cost;
 }
 

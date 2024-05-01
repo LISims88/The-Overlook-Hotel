@@ -42,8 +42,8 @@
       <div>
         <div>
           <p>Search by Date</p>
-          <input type="date" name="date-search" id="date" value="yyyy/mm/dd">
-          <label for="date-search">date</label>
+          <input aria-label="date" name="date-search" id="date" value="yyyy/mm/dd">
+          <!-- <label for="date-search">date</label> -->
         </div>
         <div class="room-options">
           <p>Search by Room Type</p>
@@ -70,7 +70,8 @@
           <h5 class="date">Date</h5>
           <h5 class="cost">Cost</h5>
         </div>
-        <ul id="room-list"></ul>
+        <ul class="room-list"></ul>
+        <ul class="booked"></ul>
     </div>
     </section>
   </main>
